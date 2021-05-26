@@ -57,28 +57,41 @@ class Practica_2_3:
 
         print("Puntuando detecciones...")
         comparador = Comparador(vers=self.vers, clases_senal=clases_senal, dimensiones=self.dimensiones, descriptor_type='hog')
-        scored_detecciones, X_train, y_train, X_test = comparador.score_y_clasificar_no_senales(detecciones)
+        scored_detecciones, X_train_1, y_train_1, X_test_1 = comparador.score_y_clasificar_no_senales(detecciones)
         print("Listo.\n")
 
-        ## Clasificador
+##      ## Clasificador 1
         aprendizaje = Aprendizaje()
-        aprendizaje.load_senales(self.dir_train, X_train_no=X_train, y_train_no=y_train, descriptor_type='hog', dimensions=(30, 30))
-        X_train = aprendizaje.reducir_LDA(aprendizaje.X_train)
-        knn = aprendizaje.entrenar_KNN(k=5, X=X_train)
+        aprendizaje.load_senales(self.dir_train, X_train_no=X_train_1, y_train_no=y_train_1, descriptor_type='hog', dimensions=(30, 30))
+        X_train_1 = aprendizaje.reducir_LDA(aprendizaje.X_train)
+        knn_1 = aprendizaje.entrenar_KNN(k=5, X=X_train_1)
 
         reconocimiento = Reconocimiento()
-        X_test = aprendizaje.reducir_LDA(X_test)
-        y_predicted = reconocimiento.clasificar_KNN(X_test, knn)
+        X_test_1 = aprendizaje.reducir_LDA(X_test_1)
+        y_predicted = reconocimiento.clasificar_KNN(X_test_1, knn_1)
 
         # Quedarse con las buenas buenísimas
         index = y_predicted > 0
         scored_detecciones = np.array(scored_detecciones)
         scored_detecciones = scored_detecciones[index]
+##      ## /Clasificador 1
 
         print("Eliminando duplicados...")
         limpiador = Limpieza()
         detecciones_buenas = limpiador.limpiar(scored_detecciones)
         print("Listo.\n")
+
+##      ## Clasificador 2
+        aprendizaje.load_data(self.dir_train, descriptor_type='hog', dimensions=self.dimensiones)
+        X_train_2 = aprendizaje.reducir_LDA(aprendizaje.X_train)
+        knn_2 = aprendizaje.entrenar_KNN(k=5, X=X_train_2)
+
+        for deteccion in detecciones_buenas:
+            X_test_2 = deteccion.caracteristicas
+            X_test_2 = aprendizaje.reducir_LDA(X_test_2)
+            sub_type = reconocimiento.clasificar_KNN(X_test_2, knn_2)
+            deteccion.sub_type = sub_type
+##      ## /Clasificador 2
 
         print("Detecciones listas.")
         representador = Representar(path="data/resultado_imgs/", color=(23, 23, 255))

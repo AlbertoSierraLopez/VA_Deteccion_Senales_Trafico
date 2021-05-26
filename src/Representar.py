@@ -9,7 +9,7 @@ class Representar:
         self.color = color
         self.path = path
 
-        self.font = cv.FONT_HERSHEY_SIMPLEX
+        self.font = cv.FONT_HERSHEY_COMPLEX
 
         os.makedirs(path, exist_ok=True)
 
@@ -31,8 +31,9 @@ class Representar:
             # Poner un rectángulo alrededor de la detección
             cv.rectangle(src, (x, y), (x + w, y + h), self.color, 2)
             # Poner un texto que expresa el tipo de detección sobre el rectángulo
-            #                               posición           tamaño fuente          grosor fuente
-            cv.putText(src, deteccion.name, (x, y-4), self.font, w*0.008, self.color, int(1/w*0.02), cv.LINE_AA)
+            #                                                                                           posición                tamaño fuente            grosor fuente
+            cv.putText(src, deteccion.name + " (" + str(int(deteccion.sub_type[0])) + ")", (int(x - w * 0.20), y - 4), self.font, w * 0.009, (0, 0, 0),       2, cv.LINE_AA)
+            cv.putText(src, deteccion.name + " (" + str(int(deteccion.sub_type[0])) + ")", (int(x - w * 0.20), y - 4), self.font, w * 0.009, (255, 255, 255), 1, cv.LINE_AA)
 
             i += 1
 

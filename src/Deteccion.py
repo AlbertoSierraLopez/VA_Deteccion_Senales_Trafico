@@ -9,7 +9,10 @@ class Deteccion:
         self.mask = None
         self.score = None
         self.type = None
+        self.sub_type = None
         self.name = ''
+
+        self.caracteristicas = None
 
         self.dimensiones = dimensiones
 

@@ -188,21 +188,24 @@ class Comparador:
             if descriptor is None:
                 raise Exception("No descriptor available")
             else:
+                descriptor = np.reshape(descriptor, (1, self.dimensiones[0] * self.dimensiones[1]))
+
                 if (self.vers == 0 and deteccion.score >= 50.0) or (self.vers > 0 and deteccion.score >= 60.0):
                     scored_detecciones.append(deteccion)
+                    deteccion.caracteristicas = descriptor
 
                     if X_test.shape[0] < 1:
-                        X_test = np.array(np.reshape(descriptor, (1, self.dimensiones[0] * self.dimensiones[1])))
+                        X_test = np.array(descriptor)
 
                     else:
-                        X_test = np.vstack((X_test, np.reshape(descriptor, (1, self.dimensiones[0] * self.dimensiones[1]))))
+                        X_test = np.vstack((X_test, descriptor))
 
                 else:
                     if X_train.shape[0] < 1:
-                        X_train = np.array(np.reshape(descriptor, (1, self.dimensiones[0] * self.dimensiones[1])))
+                        X_train = np.array(descriptor)
                         y_train = np.zeros((1,))
                     else:
-                        X_train = np.vstack((X_train, np.reshape(descriptor, (1, self.dimensiones[0] * self.dimensiones[1]))))
+                        X_train = np.vstack((X_train, descriptor))
                         tmp = np.zeros((1,))
                         y_train = np.hstack((y_train, tmp))
 

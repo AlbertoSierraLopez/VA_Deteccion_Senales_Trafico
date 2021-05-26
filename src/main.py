@@ -15,6 +15,6 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    Practica_2_3('Mejorado', "C:/Users/Aussar/PycharmProjects/VA_Practica_2.3/data/train_recortadas/", "C:/Users/Aussar/PycharmProjects/VA_Practica_2.3/data/test/")
+    Practica_2_3('Mejorado', "C:/Users/Aussar/PycharmProjects/VA_Practica_2_3/data/train_recortadas/", "C:/Users/Aussar/PycharmProjects/VA_Practica_2_3/data/train_10_ejemplos/")
 
     # Practica_2_3(args.detector, args.train_path, args.test_path)
